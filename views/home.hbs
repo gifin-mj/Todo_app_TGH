@@ -1,1 +1,158 @@
-logged in
+  
+<br><br>  
+  <form action="/api/task" method="post">
+          
+            
+              <input type="text" name="taskname"  placeholder="Enter Taskname" />
+
+
+
+              <input type="number" min="1" max="9" name="priority"  placeholder="Priority" />
+
+
+            <button class="btn btn-primary btn-sm btn-block" type="submit">Add Task</button>
+</form>
+
+<br><br>
+
+<h1>All tasks</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Index &emsp;</th>
+        <th>TaskName &emsp;</th>
+        <th>Priority &emsp;</th>
+        <th>Status &emsp;</th>
+        <th>Action &emsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+{{#each tasks as |task|}}
+<tr><td>{{#add @index 1 }}{{/add}}</td>
+    <td>{{#each task}} {{taskname}} {{/each}}</td>
+    <td>{{#each task}} {{priority}} {{/each}}</td>
+    <td>{{#each task}}
+        {{#if completed }}
+        
+        [✔]
+
+        
+        {{/if}}
+       {{/each}}
+       {{#each task}}
+        {{#if cancelled }}
+        
+        [x]
+
+        
+        {{/if}}
+       {{/each}}
+        </td>
+    <td>{{#each task}}
+        {{#eq completed  false}}
+        
+        <a href="/completetask/{{#each task}}{{_id}}{{/each}}" >
+        Completed
+        </a> &emsp;
+        {{else}}
+        
+        {{/eq}}
+       {{/each}}
+        {{#each task}}
+        {{#eq cancelled  false}}
+        
+          <a href="/canceltask/{{#each task}}{{_id}}{{/each}}" 
+        onClick="return confirm('Cancelling {{#each task}}{{taskname}}{{/each}} Are you sure? ')">
+        Cancel
+        </a>&emsp;
+        
+        
+        {{/eq}}
+       {{/each}}
+      
+        <a href="/deletetask/{{#each task}}{{_id}}{{/each}}" 
+        onClick="return confirm('Deleting {{#each task}}{{taskname}}{{/each}} Are you sure? ')">
+        Delete
+        </a>
+        </td>
+</tr>
+
+{{/each}}
+    </tbody>
+</table>
+<br>
+<h1>Task Count</h1>
+<p>Pending Tasks:{{pendingcount}} </p>
+<p>Completed Tasks:{{completedcount}} </p>
+<p>Cancelled Tasks:{{cancelledcount}} </p>
+<p>Deleted Tasks:{{deletedcount}} </p>
+
+<div class="data">
+    <div class="datatable">
+<h1>Pending tasks</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Index &emsp;</th>
+        <th>TaskName &emsp;</th>
+        <th>Priority &emsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+{{#each pendingtasks as |task|}}
+<tr>
+    <td>{{#add @index 1 }}{{/add}}</td>
+    <td>{{#each task}} {{taskname}} {{/each}}</td>
+    <td>{{#each task}} {{priority}} {{/each}}</td>
+
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+<div class="datatable">
+<h1>Completed tasks</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Index &emsp;</th>
+        <th>TaskName &emsp;</th>
+        <th>Priority &emsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+{{#each completedtasks as |task|}}
+<tr>
+    <td>{{#add @index 1 }}{{/add}}</td>
+    <td>{{#each task}} {{taskname}} {{/each}}</td>
+    <td>{{#each task}} {{priority}} {{/each}}</td>
+
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+
+<div class="datatable">
+<h1>Cancelled tasks</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Index &emsp;</th>
+        <th>TaskName &emsp;</th>
+        <th>Priority &emsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+{{#each cancelledtasks as |task|}}
+<tr>
+    <td>{{#add @index 1 }}{{/add}}</td>
+    <td>{{#each task}} {{taskname}} {{/each}}</td>
+    <td>{{#each task}} {{priority}} {{/each}}</td>
+
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+</div>

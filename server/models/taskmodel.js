@@ -6,6 +6,10 @@ var taskSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    priority:{
+        type:Number,
+        required:true
+    },
     completed:{
         type:Boolean,
         required:true

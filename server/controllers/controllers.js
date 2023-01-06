@@ -1,6 +1,6 @@
 const taskmodel=require('../models/taskmodel')
 const usermodel=require('../models/usermodel')
-const bcrypt = require("bcrypt")
+const deletemodel=require('../models/deletedtasks')
 exports.signup=async (req,res)=>{
 
     console.log(req.body);
@@ -15,6 +15,7 @@ exports.signup=async (req,res)=>{
         user
                 .save()
                 .then((result)=>{
+                    //res.send({signed:true})
                     res.redirect('/')
                 })
                 .catch((err)=>{
@@ -24,6 +25,7 @@ exports.signup=async (req,res)=>{
                 })
     }
     else{
+        //res.send({signed:false})
         res.render('signup',{status:true})
     }
 }
@@ -34,10 +36,81 @@ exports.login=async(req,res,next)=>{
     let password=req.body.password
     const user = await usermodel.findOne({ username: username,password:password });
     if (!user) {
+        //res.send({login:false})
       res.render('login',{status:true})
     }
     else{
+        //res.send({user:user,login:true})
         console.log(user);
         res.redirect('/home')
     }
 }
+exports.addtask=(req,res)=>{
+    const task=new taskmodel({
+        taskname:req.body.taskname,
+        priority:req.body.priority,
+        completed:false,
+        cancelled:false
+    })
+
+    task.
+        save()
+        .then((result)=>{
+            res.redirect('/home')
+        })
+        .catch((err)=>{
+            res.status(500).send({
+                message : err.message || "Some error occurred while creating a create operation"
+            });
+        })
+}
+
+exports.alltasks=async function(req, res, next) {
+    const alltasks=await taskmodel.find()
+    const pendingtasks=await  taskmodel.find({completed:false,cancelled:false})
+    const completedtasks=await taskmodel.find({completed:true})
+    const cancelledtasks=await taskmodel.find({cancelled:true})
+    const deletedtasks=await deletemodel.find()
+        res.render('home',{tasks:alltasks,pendingtasks:pendingtasks,completedtasks:completedtasks
+            ,cancelledtasks:cancelledtasks,deletedtasks:deletedtasks,
+        pendingcount:pendingtasks.length,
+        completedcount:completedtasks.length,
+        cancelledcount:cancelledtasks.length,
+        deletedcount:deletedtasks.length
+    })
+    
+      
+}
+exports.completetask=(req,res)=>{
+    id=req.params.id
+
+    taskmodel.findByIdAndUpdate(id,{completed:true,cancelled:false})
+        .then((data)=>{
+            res.redirect('/home')
+        })
+
+}
+exports.canceltask=(req,res)=>{
+    id=req.params.id
+    taskmodel.findByIdAndUpdate(id,{cancelled:true,completed:false})
+        .then((data)=>{
+            res.redirect('/home')
+        })
+
+}
+exports.deletetask=(req,res)=>{
+    id=req.params.id
+    const del=new deletemodel({
+        deleted:id
+    })
+    del
+    .save().then((result)=>{
+
+    })
+    taskmodel.findByIdAndDelete(id)
+        .then((data)=>{
+            res.redirect('/home')
+        })
+
+}
+

@@ -2,3 +2,7 @@
     background-color: black;
     color: white;
 }
+.data{
+    display: flex;
+  justify-content: space-between;
+}
