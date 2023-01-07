@@ -48,4 +48,15 @@ Endpoints
     
 6 /deletetask/:id
     GET - Delete task
+    
+    
+7 /api/alltasks
+    GET - Get all tasks
+    
+    
+8 /api/report
+    GET - Get reports
+
+
+
 
