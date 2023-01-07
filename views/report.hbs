@@ -1,0 +1,80 @@
+<br><br>
+<a href="/home" class="btn btn-info">Add Task</a>
+<br><br>
+
+<br>
+<h1>Task Count</h1>
+<p>Pending Tasks:{{pendingcount}} </p>
+<p>Completed Tasks:{{completedcount}} </p>
+<p>Cancelled Tasks:{{cancelledcount}} </p>
+<p>Deleted Tasks:{{deletedcount}} </p>
+
+<div class="data">
+    <div class="datatable">
+<h1>Pending tasks</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Index &emsp;</th>
+        <th>TaskName &emsp;</th>
+        <th>Priority &emsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+{{#each pendingtasks }}
+<tr>
+    <td>{{#add @index 1 }}{{/add}}</td>
+    <td>{{taskname}} </td>
+    <td>{{priority}}</td>
+
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+<div class="datatable">
+<h1>Completed tasks</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Index &emsp;</th>
+        <th>TaskName &emsp;</th>
+        <th>Priority &emsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+{{#each completedtasks}}
+<tr>
+    <td>{{#add @index 1 }}{{/add}}</td>
+    <td>{{taskname}}</td>
+    <td>{{priority}}</td>
+
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+
+<div class="datatable">
+<h1>Cancelled tasks</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Index &emsp;</th>
+        <th>TaskName &emsp;</th>
+        <th>Priority &emsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+{{#each cancelledtasks}}
+<tr>
+    <td>{{#add @index 1 }}{{/add}}</td>
+    <td>{{taskname}} </td>
+    <td>{{priority}}</td>
+
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+</div>

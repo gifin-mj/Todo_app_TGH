@@ -37,7 +37,7 @@ exports.login=async(req,res,next)=>{
     const user = await usermodel.findOne({ username: username,password:password });
     if (!user) {
         //res.send({login:false})
-      res.render('login',{status:true})
+      res.render('index',{status:true})
     }
     else{
         //res.send({user:user,login:true})
@@ -67,24 +67,35 @@ exports.addtask=(req,res)=>{
 
 exports.alltasks=async function(req, res, next) {
     const alltasks=await taskmodel.find()
-    const pendingtasks=await  taskmodel.find({completed:false,cancelled:false})
-    const completedtasks=await taskmodel.find({completed:true})
-    const cancelledtasks=await taskmodel.find({cancelled:true})
-    const deletedtasks=await deletemodel.find()
-        res.render('home',{tasks:alltasks,pendingtasks:pendingtasks,completedtasks:completedtasks
+       /* res.render('home',{tasks:alltasks,pendingtasks:pendingtasks,completedtasks:completedtasks
             ,cancelledtasks:cancelledtasks,deletedtasks:deletedtasks,
         pendingcount:pendingtasks.length,
         completedcount:completedtasks.length,
         cancelledcount:cancelledtasks.length,
         deletedcount:deletedtasks.length
-    })
+    })*/
     
-      
+      res.send(alltasks)
 }
+
+exports.report=async(req,res)=>{
+    const pendingtasks=await  taskmodel.find({completed:false,cancelled:false})
+    const completedtasks=await taskmodel.find({completed:true})
+    const cancelledtasks=await taskmodel.find({cancelled:true})
+    const deletedtasks=await deletemodel.find()
+    let report={
+        pendingtasks:pendingtasks,
+        completedtasks:completedtasks,
+        cancelledtasks:cancelledtasks,
+        deletedtasks:deletedtasks
+    }
+    res.send(report)
+}
+
 exports.completetask=(req,res)=>{
     id=req.params.id
 
-    taskmodel.findByIdAndUpdate(id,{completed:true,cancelled:false})
+    taskmodel.findByIdAndUpdate(id,{completed:true})
         .then((data)=>{
             res.redirect('/home')
         })
@@ -92,7 +103,7 @@ exports.completetask=(req,res)=>{
 }
 exports.canceltask=(req,res)=>{
     id=req.params.id
-    taskmodel.findByIdAndUpdate(id,{cancelled:true,completed:false})
+    taskmodel.findByIdAndUpdate(id,{cancelled:true})
         .then((data)=>{
             res.redirect('/home')
         })
